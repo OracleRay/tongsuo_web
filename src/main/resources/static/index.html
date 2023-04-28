@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>SM4 Encryption Demo</title>
+</head>
+<body>
+<h1>SM4 Encryption Demo</h1>
+<label for="plaintext">Enter plaintext:</label>
+<input type="text" id="plaintext">
+<label for="key">Enter key:</label>
+<input type="text" id="key">
+<button onclick="encrypt()">Encrypt</button>
+<br>
+<label for="ciphertext">Ciphertext:</label>
+<input type="text" id="ciphertext" readonly>
+
+<script>
+    function encrypt() {
+        const plaintext = document.getElementById("plaintext").value;
+        const key = document.getElementById("key").value;
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "http://localhost:8080/api/encrypt", true);
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                document.getElementById("ciphertext").value = xhr.responseText;
+            }
+        }
+        xhr.send(JSON.stringify({"plaintext": plaintext, "key": key}));
+    }
+</script>
+</body>
+</html>
